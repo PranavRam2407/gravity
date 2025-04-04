@@ -3,6 +3,7 @@ import pickle
 import mediapipe as mp
 import cv2
 
+# Initialize MediaPipe Hands
 mp_hands = mp.solutions.hands
 hands = mp_hands.Hands(static_image_mode=True, min_detection_confidence=0.3)
 
@@ -27,18 +28,20 @@ for dir_ in os.listdir(DATA_DIR):
 
         img = cv2.imread(os.path.join(class_dir, img_path))
         if img is None:
-            print(f"Warning: Could not read {img_path} in {dir_}")
-            continue
+            continue  # Skip unreadable images
 
         img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         results = hands.process(img_rgb)
 
+        # If at least one hand is detected
         if results.multi_hand_landmarks:
             for hand_landmarks in results.multi_hand_landmarks:
+                # Collect all landmark coordinates
                 for landmark in hand_landmarks.landmark:
                     x_.append(landmark.x)
                     y_.append(landmark.y)
 
+                # Normalize landmark positions
                 for landmark in hand_landmarks.landmark:
                     data_aux.append(landmark.x - min(x_))
                     data_aux.append(landmark.y - min(y_))
@@ -46,7 +49,8 @@ for dir_ in os.listdir(DATA_DIR):
             data.append(data_aux)
             labels.append(int(dir_))  # Convert labels to integers
 
+# Save processed data to a file
 with open('data.pickle', 'wb') as f:
     pickle.dump({'data': data, 'labels': labels}, f)
 
-print("Data saved successfully to 'data.pickle'!")
+print("✅ Data saved successfully to 'data.pickle'!")
