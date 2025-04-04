@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Instant English to Tamil Translator</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(45deg, #6a11cb, #2575fc);
+            position: relative;
+        }
+
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            background: url('https://www.transparenttextures.com/patterns/arabesque.png');
+            opacity: 0.2;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            width: 500px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            text-align: center;
+            color: white;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 28px;
+            color: #fff;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #6a11cb;
+            border-radius: 8px;
+            resize: none;
+            font-size: 16px;
+            color: #333;
+            outline: none;
+            margin-bottom: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+
+        #outputText {
+            margin-top: 20px;
+            padding: 15px;
+            border: 2px solid #6a11cb;
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.8);
+            color: #333;
+            min-height: 100px;
+            white-space: pre-wrap;
+        }
+
+        .loading {
+            color: #6a11cb;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="particles"></div>
+
+    <div class="container">
+        <h1>✨ Instant English to Tamil Translator ✨</h1>
+        <textarea id="inputText" rows="4" placeholder="Type here to translate..."></textarea><br>
+        
+        <div id="outputText"></div>
+        <div id="loading" class="loading"></div>
+    </div>
+
+    <script>
+        let typingTimeout;
+        const delay = 500; // Milliseconds to wait before triggering translation
+
+        document.getElementById('inputText').addEventListener('input', () => {
+            clearTimeout(typingTimeout);
+            const text = document.getElementById('inputText').value.trim();
+
+            if (text) {
+                document.getElementById('loading').innerText = "Translating...";
+                typingTimeout = setTimeout(() => translateText(text), delay);
+            } else {
+                document.getElementById('outputText').innerText = "";
+                document.getElementById('loading').innerText = "";
+            }
+        });
+
+        async function translateText(text) {
+            const url = `https://lingva.ml/api/v1/en/ta/${encodeURIComponent(text)}`;
+
+            try {
+                const response = await fetch(url);
+                
+                if (!response.ok) {
+                    throw new Error(`Error ${response.status}: ${response.statusText}`);
+                }
+
+                const data = await response.json();
+
+                if (data.translation) {
+                    document.getElementById('outputText').innerText = data.translation;
+                    document.getElementById('loading').innerText = "";
+                } else {
+                    document.getElementById('outputText').innerText = "Error: Translation failed.";
+                    document.getElementById('loading').innerText = "";
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                document.getElementById('outputText').innerText = "Error: " + error.message;
+                document.getElementById('loading').innerText = "";
+            }
+        }
+    </script>
+</body>
+</html>

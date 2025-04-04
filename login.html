@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In / Sign Up</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #6e44ff, #9e7dff, #c7a6ff, #ffffff);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            transition: all 0.3s;
+            width: 300px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #4a00e0;
+        }
+
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 20px;
+            border: 1px solid #ddd;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        button {
+            width: 95%;
+            padding: 12px;
+            margin: 10px 0;
+            background-color: #ff4b2b;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #ff6b4b;
+        }
+
+        .link {
+            margin-top: 10px;
+            display: block;
+            color: #4a00e0;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="signInPage">
+        <h2>Sign In</h2>
+        <input type="email" placeholder="Email" required>
+        <input type="password" placeholder="Password" required>
+        <button onclick="alert('Signed In Successfully')">Sign In</button>
+        <span class="link" onclick="showSignUp()">Create an Account</span>
+    </div>
+
+    <div class="container" id="signUpPage" style="display: none;">
+        <h2>Sign Up </h2>
+        <input type="text" placeholder="Full Name" required>
+        <input type="date" placeholder="Date of Birth" required>
+        <button onclick="nextStep()">Next</button>
+        <span class="link" onclick="showSignIn()">Already have an account?</span>
+    </div>
+
+    <div class="container" id="signUpEmail" style="display: none;">
+        <h2>Sign Up</h2>
+        <input type="email" placeholder="Email" required>
+        <button onclick="nextStep2()">Next</button>
+    </div>
+    
+
+    <div class="container" id="signUpPassword" style="display: none;">
+        <h2>Sign Up </h2>
+        <input type="password" placeholder="Set Password" required>
+        <button onclick="alert('Account Created Successfully')">Sign Up</button>
+    </div>
+
+    <script>
+        function showSignUp() {
+            document.getElementById("signInPage").style.display = "none";
+            document.getElementById("signUpPage").style.display = "block";
+        }
+
+        function showSignIn() {
+            document.getElementById("signUpPage").style.display = "none";
+            document.getElementById("signInPage").style.display = "block";
+        }
+
+        function nextStep() {
+            document.getElementById("signUpPage").style.display = "none";
+            document.getElementById("signUpEmail").style.display = "block";
+        }
+
+        function nextStep2() {
+            document.getElementById("signUpEmail").style.display = "none";
+            document.getElementById("signUpPassword").style.display = "block";
+        }
+    </script>
+</body>
+</html>

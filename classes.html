@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Level Selection</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #6e44ff, #9e7dff, #c7a6ff, #ffffff);
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            padding: 50px;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 1.5s;
+            width: 700px;
+            transition: all 0.5s;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 40px;
+            color: #4a00e0;
+            font-weight: 800;
+        }
+
+        .option, .level-option {
+            margin: 15px auto;
+            padding: 10px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
+            color: white;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+            font-weight: 600;
+            width: 30%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .option:hover, .level-option:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .level-options {
+            display: none;
+            animation: fadeIn 0.8s;
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .level-option img {
+            width: 100px;
+            height: 100px;
+            border-radius: 15px;
+            margin-bottom: 10px;
+        }
+
+        .fullscreen-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            display: none;
+        }
+
+        .fullscreen-image img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 20px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="container">
+        <h1>Select Your Level</h1>
+        <div id="level-selection">
+            <button class="option" onclick="showOptions('level1')">Level 1</button>
+            <button class="option" onclick="showOptions('level2')">Level 2</button>
+        </div>
+        
+        <div class="level-options" id="level1-options">
+            <h1>Level 1 Options</h1>
+            <div class="row">
+                <div class="level-option" onclick="showImage('https://cdn3d.iconscout.com/3d/premium/preview/partnership-hand-gesture-3d-icon-download-in-png-blend-fbx-gltf-file-formats--relationship-team-support-teamwork-pack-sign-symbols-icons-6578147.png?f=webp&h=700','This is Option 1 description')">
+                    <img src="https://cdn3d.iconscout.com/3d/premium/preview/partnership-hand-gesture-3d-icon-download-in-png-blend-fbx-gltf-file-formats--relationship-team-support-teamwork-pack-sign-symbols-icons-6578147.png?f=webp&h=700" alt="Option 1"><p> THIS IS THE VIDEO FO HELLO</p>
+                    Option 1
+                </div>
+                <div class="level-option" onclick="showImage('https://via.placeholder.com/500')">
+                    <img src="https://via.placeholder.com/100" alt="Option 2">
+                    Option 2
+                </div>
+                <div class="level-option" onclick="showImage('https://via.placeholder.com/500')">
+                    <img src="https://via.placeholder.com/100" alt="Option 3">
+                    Option 3
+                </div>
+                <div class="level-option" onclick="showImage('https://via.placeholder.com/500')">
+                    <img src="https://via.placeholder.com/100" alt="Option 4">
+                    Option 4
+                </div>
+                <div class="level-option" onclick="showImage('https://via.placeholder.com/500')">
+                    <img src="https://via.placeholder.com/100" alt="Option 5">
+                    Option 5
+                </div>
+            </div>
+        </div>
+        
+        <div class="level-options" id="level2-options">
+            <h1>Level 2 Options</h1>
+            <div class="row">
+                <div class="level-option" onclick="showImage('https://via.placeholder.com/500')">
+                    <img src="https://via.placeholder.com/100" alt="Option 1">
+                    Option 1
+                </div>
+                <div class="level-option" onclick="showImage('https://via.placeholder.com/500')">
+                    <img src="https://via.placeholder.com/100" alt="Option 2">
+                    Option 2
+                </div>
+                <div class="level-option" onclick="showImage('https://via.placeholder.com/500')">
+                    <img src="https://via.placeholder.com/100" alt="Option 3">
+                    Option 3
+                </div>
+                <div class="level-option" onclick="showImage('https://via.placeholder.com/500')">
+                    <img src="https://via.placeholder.com/100" alt="Option 4">
+                    Option 4
+                </div>
+                <div class="level-option" onclick="showImage('https://via.placeholder.com/500')">
+                    <img src="https://via.placeholder.com/100" alt="Option 5">
+                    Option 5
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="fullscreen-image" id="fullscreenImage">
+        <img id="displayedImage" src="" alt="Fullscreen Image">
+    </div>
+
+    <script>
+        function showOptions(level) {
+            document.getElementById("level-selection").style.display = "none";
+            if (level === 'level1') {
+                document.getElementById("level1-options").style.display = "block";
+            } else if (level === 'level2') {
+                document.getElementById("level2-options").style.display = "block";
+            }
+        }
+
+        function showImage(src) {
+            document.getElementById("container").style.display = "none";
+            const fullscreenImage = document.getElementById("fullscreenImage");
+            const displayedImage = document.getElementById("displayedImage");
+            displayedImage.src = src;
+            fullscreenImage.style.display = "flex";
+        }
+    </script>
+</body>
+</html>

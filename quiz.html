@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Quiz</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .quiz-container, .result-container {
+            width: 500px;
+            padding: 30px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            animation: fadeIn 1s ease;
+        }
+        img {
+            width: 100%;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .option {
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            background: #f0f0f0;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .correct {
+            background-color: #4CAF50;
+            color: white;
+            border-color: #4CAF50;
+        }
+        .wrong {
+            background-color: #f44336;
+            color: white;
+            border-color: #f44336;
+        }
+        #nextButton, #restartButton {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #6e8efb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: none;
+        }
+        #nextButton:hover, #restartButton:hover {
+            background-color: #5b72c6;
+        }
+        .analysis {
+            text-align: center;
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        .analysis p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container" id="quizContainer">
+        <h2 id="question"></h2>
+        <img id="questionImage" src="" alt="Question Image">
+        
+        <div class="options" id="options"></div>
+        <button id="nextButton" onclick="nextQuestion()">Next</button>
+    </div>
+
+    <div class="result-container" id="resultContainer" style="display: none;">
+        <h1>Quiz Completed!</h1>
+        <div id="scoreDisplay"></div>
+        <button id="restartButton" onclick="restartQuiz()">Restart Quiz</button>
+    </div>
+
+    <audio id="correctSound" src="correct.mp3"></audio>
+    <audio id="wrongSound" src="wrong.mp3"></audio>
+
+    <script>
+        const questions = [
+            { question: "What is this animal?", image: "https://cdn3d.iconscout.com/3d/premium/preview/partnership-hand-gesture-3d-icon-download-in-png-blend-fbx-gltf-file-formats--relationship-team-support-teamwork-pack-sign-symbols-icons-6578147.png?f=webp&h=700", options: ["Cat", "Dog", "Lion", "Elephant"], correct: 1 },
+            { question: "Identify the fruit:", image: "https://cdn3d.iconscout.com/3d/premium/preview/partnership-hand-gesture-3d-icon-download-in-png-blend-fbx-gltf-file-formats--relationship-team-support-teamwork-pack-sign-symbols-icons-6578147.png?f=webp&h=700", options: ["Banana", "Apple", "Grapes", "Mango"], correct: 1 },
+            { question: "What is the capital of France?", image: "https://cdn3d.iconscout.com/3d/premium/preview/partnership-hand-gesture-3d-icon-download-in-png-blend-fbx-gltf-file-formats--relationship-team-support-teamwork-pack-sign-symbols-icons-6578147.png?f=webp&h=700", options: ["Berlin", "Paris", "Madrid", "Rome"], correct: 1 }
+        ];
+
+        let currentQuestionIndex = 0;
+        let correctAnswers = 0;
+        let analysis = [];
+
+        function loadQuestion() {
+            const currentQuestion = questions[currentQuestionIndex];
+            document.getElementById("question").textContent = currentQuestion.question;
+            document.getElementById("questionImage").src = currentQuestion.image;
+
+            const optionsDiv = document.getElementById("options");
+            optionsDiv.innerHTML = "";
+
+            currentQuestion.options.forEach((option, index) => {
+                const optionDiv = document.createElement("div");
+                optionDiv.classList.add("option");
+                optionDiv.innerHTML = `${option} <span></span>`;
+                optionDiv.onclick = () => checkAnswer(optionDiv, index === currentQuestion.correct);
+                optionsDiv.appendChild(optionDiv);
+            });
+
+            document.getElementById("nextButton").style.display = "none";
+        }
+
+        function checkAnswer(element, isCorrect) {
+            const options = document.querySelectorAll('.option');
+            const span = element.querySelector('span');
+            const correctSound = document.getElementById("correctSound");
+            const wrongSound = document.getElementById("wrongSound");
+
+            if (isCorrect) {
+                element.classList.add('correct');
+                span.innerHTML = " ✅ Correct";
+                correctAnswers++;
+                analysis.push(`Question ${currentQuestionIndex + 1}: ✅ Correct`);
+                correctSound.play();
+                navigator.vibrate(200);
+            } else {
+                element.classList.add('wrong');
+                span.innerHTML = " ❌ Wrong";
+                analysis.push(`Question ${currentQuestionIndex + 1}: ❌ Wrong`);
+                wrongSound.play();
+                navigator.vibrate([100, 50, 100]);
+            }
+
+            options.forEach(option => option.onclick = null);
+            document.getElementById("nextButton").style.display = "block";
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                loadQuestion();
+            } else {
+                displayResult();
+            }
+        }
+
+        function displayResult() {
+            document.getElementById("quizContainer").style.display = "none";
+            document.getElementById("resultContainer").style.display = "block";
+
+            const percentage = (correctAnswers / questions.length) * 100;
+            const analysisText = analysis.map(line => `<p>${line}</p>`).join("");
+
+            document.getElementById("scoreDisplay").innerHTML = `
+                <p>Total Questions: ${questions.length}</p>
+                <p>Correct Answers: ${correctAnswers}</p>
+                <p>Percentage: ${percentage.toFixed(2)}%</p>
+                <div class="analysis">${analysisText}</div>
+            `;
+        }
+
+        function restartQuiz() {
+            currentQuestionIndex = 0;
+            correctAnswers = 0;
+            analysis = [];
+            document.getElementById("quizContainer").style.display = "block";
+            document.getElementById("resultContainer").style.display = "none";
+            loadQuestion();
+        }
+
+        loadQuestion();
+    </script>
+</body>
+</html>
