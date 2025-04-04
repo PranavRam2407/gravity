@@ -1,74 +1,44 @@
 import pickle
-
-import cv2
-import mediapipe as mp
+import os
 import numpy as np
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
 
-model_dict = pickle.load(open('./model.p', 'rb'))
-model = model_dict['model']
+# Load dataset
+DATA_PATH = os.path.join('E:', 'data.pickle')
 
-cap = cv2.VideoCapture(0)
+with open(DATA_PATH, 'rb') as f:
+    data_dict = pickle.load(f)
 
-mp_hands = mp.solutions.hands
-mp_drawing = mp.solutions.drawing_utils
-mp_drawing_styles = mp.solutions.drawing_styles
+# Convert data to a uniform format
+data = data_dict['data']
+labels = np.asarray(data_dict['labels'])
 
-hands = mp_hands.Hands(static_image_mode=True, min_detection_confidence=0.3)
+# Ensure all sequences have the same length
+max_length = max(len(seq) for seq in data)  # Find the longest sequence
+data_padded = [seq + [0] * (max_length - len(seq)) for seq in data]  # Pad shorter sequences
 
-labels_dict = {0: 'A', 1: 'B', 2: 'L'}
-while True:
+# Convert to NumPy array
+data_array = np.asarray(data_padded, dtype=np.float32)
 
-    data_aux = []
-    x_ = []
-    y_ = []
+# Split dataset
+x_train, x_test, y_train, y_test = train_test_split(data_array, labels, test_size=0.2, shuffle=True, stratify=labels, random_state=42)
 
-    ret, frame = cap.read()
+# Train the model
+model = RandomForestClassifier(n_estimators=100, max_depth=10, random_state=42)
+model.fit(x_train, y_train)
 
-    H, W, _ = frame.shape
+# Evaluate model
+y_predict = model.predict(x_test)
+accuracy = accuracy_score(y_test, y_predict)
 
-    frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+print(f'✅ Accuracy: {accuracy * 100:.2f}% of samples classified correctly!')
 
-    results = hands.process(frame_rgb)
-    if results.multi_hand_landmarks:
-        for hand_landmarks in results.multi_hand_landmarks:
-            mp_drawing.draw_landmarks(
-                frame,  # image to draw
-                hand_landmarks,  # model output
-                mp_hands.HAND_CONNECTIONS,  # hand connections
-                mp_drawing_styles.get_default_hand_landmarks_style(),
-                mp_drawing_styles.get_default_hand_connections_style())
+# Save trained model
+MODEL_PATH = 'model.p'
+with open(MODEL_PATH, 'wb') as f:
+    pickle.dump({'model': model}, f)
 
-        for hand_landmarks in results.multi_hand_landmarks:
-            for i in range(len(hand_landmarks.landmark)):
-                x = hand_landmarks.landmark[i].x
-                y = hand_landmarks.landmark[i].y
-
-                x_.append(x)
-                y_.append(y)
-
-            for i in range(len(hand_landmarks.landmark)):
-                x = hand_landmarks.landmark[i].x
-                y = hand_landmarks.landmark[i].y
-                data_aux.append(x - min(x_))
-                data_aux.append(y - min(y_))
-
-        x1 = int(min(x_) * W) - 10
-        y1 = int(min(y_) * H) - 10
-
-        x2 = int(max(x_) * W) - 10
-        y2 = int(max(y_) * H) - 10
-
-        prediction = model.predict([np.asarray(data_aux)])
-
-        predicted_character = labels_dict[int(prediction[0])]
-
-        cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 0), 4)
-        cv2.putText(frame, predicted_character, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 0, 0), 3,
-                    cv2.LINE_AA)
-
-    cv2.imshow('frame', frame)
-    cv2.waitKey(1)
-
-
-cap.release()
-cv2.destroyAllWindows()
+print(f'✅ Model saved successfully as {MODEL_PATH}!')
+a
