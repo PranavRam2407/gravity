@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Level Selection</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(135deg, #6e44ff, #9e7dff, #c7a6ff, #ffffff);
+      font-family: 'Poppins', sans-serif;
+      overflow: hidden;
+    }
+
+    .container {
+      text-align: center;
+      padding: 50px;
+      border-radius: 30px;
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+      animation: fadeIn 1.5s;
+      width: 700px;
+      transition: all 0.5s;
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 40px;
+      color: #4a00e0;
+      font-weight: 800;
+    }
+
+    .option, .level-option {
+      margin: 15px auto;
+      padding: 10px;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+      background: linear-gradient(45deg, #ff416c, #ff4b2b);
+      color: white;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+      font-weight: 600;
+      width: 30%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .option:hover, .level-option:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .level-options {
+      display: none;
+      animation: fadeIn 0.8s;
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    .level-option img {
+      width: 100px;
+      height: 100px;
+      border-radius: 15px;
+      margin-bottom: 10px;
+    }
+
+    .fullscreen-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: black;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .fullscreen-video iframe {
+      width: 90%;
+      height: 90%;
+      border: none;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      font-size: 2rem;
+      color: white;
+      background: rgba(0, 0, 0, 0.4);
+      border: none;
+      cursor: pointer;
+      z-index: 1001;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="container">
+    <h1>Select Your Level</h1>
+    <div id="level-selection">
+      <button class="option" onclick="showOptions('level1')">Level 1</button>
+      <button class="option" onclick="showOptions('level2')">Level 2</button>
+    </div>
+
+    <div class="level-options" id="level1-options">
+      <h1>Level 1 Options</h1>
+      <button onclick="goBack()" style="position: absolute; top: 20px; right: 20px; font-size: 1.2rem;">✖ Close</button>
+      <div class="row">
+        <div class="level-option" onclick="showYouTubeVideo('oAY6YOEEu8s')">
+          <img src="https://i.postimg.cc/nVyK6Lbg/Whats-App-Image-2025-04-05-at-9-59-40-AM.jpg" alt="Option 1">
+          Hello
+        </div>
+
+        <div class="level-option" onclick="showYouTubeVideo('Ff98qLjuJUY')">
+          <img src="https://i.postimg.cc/GpvnxtRR/Whats-App-Image-2025-04-05-at-9-59-40-AM-1.jpg" alt="Option 2">
+          Good Bye
+        </div>
+        <div class="level-option" onclick="showYouTubeVideo('VzmIROSWq1g')">
+          <img src="https://i.postimg.cc/fbfgb9ZV/Whats-App-Image-2025-04-05-at-9-59-39-AM.jpg" alt="Option 3">
+         Please
+        </div>
+        <div class="level-option" onclick="showYouTubeVideo('zYJqEXg3z-Q')">
+          <img src="https://i.postimg.cc/8CNtxzWN/Whats-App-Image-2025-04-05-at-9-59-39-AM-1.jpg" alt="Option 4">
+        Help
+        </div>
+        <div class="level-option" onclick="showYouTubeVideo('NvPr6sj4--c')">
+          <img src="https://i.postimg.cc/TPdBg9tV/Whats-App-Image-2025-04-05-at-9-59-38-AM.jpg" alt="Option 5">
+        Food
+        </div>
+      </div>
+    </div>
+
+    <div class="level-options" id="level2-options">
+      <h1>Level 2 Options</h1>
+      <div class="row">
+        <div class="level-option" onclick="showYouTubeVideo('Ur-eB3hs4gA')">
+          <img src="https://i.postimg.cc/9FH8ybMD/Whats-App-Image-2025-04-05-at-9-59-39-AM-2.jpg" alt="Option 1">
+        Thank You
+        </div>
+        <div class="level-option" onclick="showYouTubeVideo('ckSp3Vwszwo')">
+          <img src="https://i.postimg.cc/XJyLCB6K/Whats-App-Image-2025-04-05-at-9-59-38-AM-1.jpg" alt="Option 2">
+         Sorry
+        </div>
+        <div class="level-option" onclick="showYouTubeVideo('Jlm9-G4ulpo')">
+          <img src="https://i.postimg.cc/6qrhHs3y/Whats-App-Image-2025-04-05-at-9-59-38-AM-2.jpg" alt="Option 3">
+        Home
+        </div>
+        <div class="level-option" onclick="showYouTubeVideo('nhZGfAZuz1Q')">
+          <img src="https://i.postimg.cc/pX1mgGFT/Whats-App-Image-2025-04-05-at-9-59-37-AM.jpg" alt="Option 4">
+        Water
+        </div>
+        <div class="level-option" onclick="showYouTubeVideo('BZeE_ETyma8')">
+          <img src="https://i.postimg.cc/BQdqTdFx/Whats-App-Image-2025-04-05-at-9-59-37-AM-1.jpg" alt="Option 5">
+         Friend
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fullscreen YouTube Video -->
+  <div class="fullscreen-video" id="fullscreenVideo">
+    <button class="close-btn" onclick="closeVideo()">✖</button>
+    <iframe id="youtubeFrame" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+  </div>
+
+  <script>
+    function showOptions(level) {
+      document.getElementById("level-selection").style.display = "none";
+      document.getElementById("level1-options").style.display = "none";
+      document.getElementById("level2-options").style.display = "none";
+      document.getElementById(`${level}-options`).style.display = "block";
+    }
+
+    function goBack() {
+      document.getElementById("level-selection").style.display = "block";
+      document.getElementById("level1-options").style.display = "none";
+      document.getElementById("level2-options").style.display = "none";
+    }
+
+    function showImage(url) {
+      alert("Image mode clicked! Replace this with fullscreen image logic if needed.");
+    }
+
+    function showYouTubeVideo(videoId) {
+      const fullscreen = document.getElementById("fullscreenVideo");
+      const yt = document.getElementById("youtubeFrame");
+      yt.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
+      fullscreen.style.display = "flex";
+    }
+
+    function closeVideo() {
+      const fullscreen = document.getElementById("fullscreenVideo");
+      const yt = document.getElementById("youtubeFrame");
+      yt.src = "";
+      fullscreen.style.display = "none";
+    }
+  </script>
+</body>
+</html>
